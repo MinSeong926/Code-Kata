@@ -1,0 +1,27 @@
+// 임의의 양의 정수 n에 대해, n이 어떤 양의 정수 x의 제곱인지 아닌지 판단하려 합니다.
+// n이 양의 정수 x의 제곱이라면 x+1의 제곱을 리턴하고, n이 양의 정수 x의 제곱이 아니라면 -1을 리턴하는 함수를 완성하세요.
+
+// 입출력 | 예
+// n	    | return
+// 121	  | 144
+// 3	    | -1
+
+#include <string>
+#include <vector>
+#include <cmath> // sqrt() 함수 사용을 위해 선언
+
+using namespace std;
+
+long long solution(long long n) {
+    long long answer = sqrt(n); // sqrt()는 루트 함수로 매개변수로 들어온 n에 루트를 씌워서 계산하는 값을 반환한다.
+
+    if(answer * answer == n){
+        answer = (answer + 1) * (answer + 1);
+    }
+    else {
+        answer = -1;
+    }
+
+
+    return answer;
+}
