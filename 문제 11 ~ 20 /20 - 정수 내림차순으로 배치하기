@@ -1,0 +1,30 @@
+// 함수 solution은 정수 n을 매개변수로 입력받습니다. n의 각 자릿수를 큰것부터 작은 순으로 정렬한 새로운 정수를 리턴해주세요. 예를들어 n이 118372면 873211을 리턴하면 됩니다.
+
+// 입출력 | 예
+// n	    | return
+// 118372	| 873211
+
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+long long solution(long long n) {
+    long long answer = 0;
+    vector<int> temp; // 벡터형 배열 temp 선언
+
+    while(n){ // 배열에 n의 숫자를 한 차례씩 넣기 
+        temp.push_back(n % 10); // temp 맨 끝에 숫자 추가
+        n /= 10; // n에 맨 마지막 숫자 제거
+    }
+
+    sort(temp.begin(), temp.end(), greater<int>()); // sort: 데이터 정렬 함수. 내림차순으로 정렬.
+
+    for(int i = 0; i < temp.size(); i++){
+        answer *= 10;
+        answer += temp[i];
+    }
+
+    return answer;
+}
