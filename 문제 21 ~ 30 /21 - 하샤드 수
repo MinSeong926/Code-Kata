@@ -1,0 +1,36 @@
+// 양의 정수 x가 하샤드 수이려면 x의 자릿수의 합으로 x가 나누어져야 합니다. 예를 들어 18의 자릿수 합은 1+8=9이고, 18은 9로 나누어 떨어지므로 18은 하샤드 수입니다. 자연수 x를 입력받아 x가 하샤드 수인지 아닌지 검사하는 함수, solution을 완성해주세요.
+
+// 입출력 예
+// x	return
+// 10	true
+// 12	true
+// 11	false
+// 13	false
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+bool solution(int x) {
+    bool answer = true;
+    int num1, num2, num3, num4, num5, sum = 0;
+
+    if(x > 0){
+        num5 = x/10000;
+        num4 = (x%10000) / 1000;
+        num3 = (x%1000) / 100;
+        num2 = (x%100) / 10;
+        num1 = x%10;
+    }
+    sum = num1 + num2 + num3 + num4 + num5;
+
+    if(x % sum == 0){
+        return answer;
+    }
+    else{
+        answer = false;
+    }
+
+    return answer;
+}
