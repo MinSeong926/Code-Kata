@@ -1,0 +1,21 @@
+// 0부터 9까지의 숫자 중 일부가 들어있는 정수 배열 numbers가 매개변수로 주어집니다.
+// numbers에서 찾을 수 없는 0부터 9까지의 숫자를 모두 찾아 더한 수를 return 하도록 solution 함수를 완성해주세요.
+
+// 입출력 예
+// numbers	result
+// [1,2,3,4,6,7,8,0]	14
+// [5,8,4,0,6,7,9]	6
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(vector<int> numbers) {
+    int answer = 45; // 0부터 9까지 전부 더하기
+
+    for(int i = 0; i < numbers.size(); i++){
+        answer -= numbers[i]; // answer에 numbers를 빼면 없는 값이 저절로 합해짐
+    }
+    return answer;
+}
