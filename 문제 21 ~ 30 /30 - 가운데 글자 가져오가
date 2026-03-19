@@ -1,0 +1,27 @@
+// 단어 s의 가운데 글자를 반환하는 함수, solution을 만들어 보세요. 단어의 길이가 짝수라면 가운데 두글자를 반환하면 됩니다.
+
+// 입출력 예
+// s	return
+// "abcde"	"c"
+// "qwer"	"we"
+
+// 해결법: substr() - 원하는 위치에 있는 문자열을 가져옴.
+// 사용법: 문자열.substr(시작 위치, 길이) - 첫 번째 인수에는 시작 위치를, 두 번째 인수는 얻고싶은 문자수를 지정한다.
+// 문자열 'abcde'가 주어질 때, 's.length()/2'로 문자열을 절반으로 가른다.('cde') 그리고 길이를 1로 하면 c를 얻는거다.
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(string s) {
+    string answer = "";
+
+    if(s.length() % 2 == 0){
+        return s.substr(s.length()/2 -1, 2);
+    }
+    else{
+        return s.substr(s.length()/2, 1);
+    }
+    return answer;
+}
