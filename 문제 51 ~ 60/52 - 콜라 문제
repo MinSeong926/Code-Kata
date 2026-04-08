@@ -1,0 +1,20 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(int a, int b, int n) {
+    int answer = 0;
+
+    // 빈 병이 a개 이상일 때까지 반복
+    while(n >= a){
+        // 교환할 수 있는 콜라 계산
+        int coke = (n / a) * b;
+        answer += coke;
+
+        // 빈 병 개수 = 새로 받은 콜라 + 교환 후 남은 콜라
+        n = coke + (n % a);
+    }
+
+    return answer;
+}
