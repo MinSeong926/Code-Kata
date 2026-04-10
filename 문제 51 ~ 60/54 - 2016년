@@ -1,0 +1,29 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+string solution(int a, int b) {
+    string answer = "";
+
+    // 요일 배열(1월 1일이 금요일이라 금요일부터 시작)
+    string day[7] = {"FRI", "SAT", "SUN", "MON", "TUE", "WED", "THU"};
+    // 1~12월까지 일수
+    int month[13] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    int total_day = 0;
+
+    // 입력받은 달(a) 전까지 모든 일수 더하기
+    for(int i = 1; i < a; i++){
+        total_day += month[i];
+    }
+
+    // 일(b) 더하고 1월 1일 기준으로 -1 해주기
+    total_day += b - 1;
+
+    // 7로 나눈 나머지를 이용해서 요일 계산
+    answer = day[total_day % 7];
+
+    return answer;
+}
