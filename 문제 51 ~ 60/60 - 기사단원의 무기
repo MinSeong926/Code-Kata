@@ -1,0 +1,33 @@
+#include <string>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+// 약수 개수 구하는 함수
+int A(int n){
+    int count = 0;
+
+    for(int i = 1; i * i <= n; i++){
+        if(i*i == n) count++; // 제곱근인 경우
+        else if(n % i == 0) count += 2; // 쌍으로 존재하는 약수
+    }
+
+    return count;
+}
+
+int solution(int number, int limit, int power) {
+    int answer = 0;
+
+    for(int i = 1; i <= number; i++){
+        int count = A(i);
+
+        if(count > limit){
+            answer += power;
+        }
+        else{
+            answer += count;
+        }
+    }
+    return answer;
+}
