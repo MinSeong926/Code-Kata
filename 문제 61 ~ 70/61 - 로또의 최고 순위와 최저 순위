@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> solution(vector<int> lottos, vector<int> win_nums) {
+    int zero_cnt = 0;
+    int match = 0;
+
+    // 0의 개수와 일치하는 번호 개수 계산
+    for(int n : lottos) {
+        if(n == 0) zero_cnt++;
+        else {
+            for(int w : win_nums) {
+                if(n == w) match++;
+            }
+        }
+    }
+
+    // 최고 순위: 맞은 개수 + 0의 개수, 최저 순위: 맞은 개수
+    int max_rank = min(7 - (match + zero_cnt), 6);
+    int min_rank = min(7 - match, 6);
+
+    // 맞힌 개수가 1개 이하일 경우 6등 처리 (0개도 6등)
+    if(match + zero_cnt < 2) max_rank = 6;
+    if(match < 2) min_rank = 6;
+
+    return {max_rank, min_rank};
+}
