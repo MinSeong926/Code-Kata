@@ -1,0 +1,43 @@
+#include <string>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+int solution(vector<string> want, vector<int> number, vector<string> discount) {
+    int answer = 0;
+    
+    map<string, int> shopping_list;
+    
+    // 쇼핑 리스트 채우기
+    for(int i = 0; i < want.size(); ++i)
+    {
+        shopping_list.insert({want[i], number[i]});
+    }
+    
+    // 모두 할인 받을 수 있는 날의 수 찾기
+    for(int i = 0; i < discount.size(); ++i)
+    {
+        map<string, int> copy = shopping_list;
+        
+        int last_day = i+10;
+        if(last_day > discount.size())
+            last_day = discount.size();
+        
+        for(int d = i; d < last_day;  ++d)
+        {        
+            auto iter = copy.find(discount[d]);
+            if(iter != copy.end())
+            {   
+                --copy[iter->first];
+                if(copy[iter->first] <= 0)
+                    copy.erase(iter);
+            }
+        }
+        
+        if(copy.empty())
+            ++answer;    
+    }
+    
+    return answer;
+}
