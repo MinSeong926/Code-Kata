@@ -1,0 +1,41 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int getIndex(char c) {
+    if (c == 'A') return 1;
+    else if (c == 'E') return 2;
+    else if (c == 'I') return 3;
+    else if (c == 'O') return 4;
+    else if (c == 'U') return 5;
+}
+
+int getCntByDepth(int depth) {
+    if (depth == 0) return 780;
+    else if (depth == 1) return 155;
+    else if (depth == 2) return 30;
+    else if (depth == 3) return 5;
+    else if (depth == 4) return 0;
+}
+
+int dfs(int depth, string word) {
+    int ret = 0;
+    int index = getIndex(word[depth]);
+    
+    ret += (index - 1) * getCntByDepth(depth);
+    ret += index;
+    if (depth >= word.size()) {
+        return 0;
+    } else {
+        ret += dfs(depth + 1, word);
+    }
+    return ret;
+}
+
+int solution(string word) {
+    int answer = 0;
+    
+    answer = dfs(0, word);
+    return answer;
+}
