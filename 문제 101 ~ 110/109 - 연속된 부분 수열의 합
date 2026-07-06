@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> solution(vector<int> sequence, int k) {
+    int s = 0, e = 0;
+    int sum = sequence[0];
+    int min_len = 1e9, ans_s = 0, ans_e = 0;
+
+    while (s <= e && e < sequence.size()) {
+        if (sum == k) {
+            if (e - s < min_len) {
+                min_len = e - s;
+                ans_s = s;
+                ans_e = e;
+            }
+            sum -= sequence[s++];
+        } else if (sum < k) {
+            e++;
+            if (e < sequence.size()) sum += sequence[e];
+        } else {
+            sum -= sequence[s++];
+        }
+    }
+
+    return {ans_s, ans_e};
+}
