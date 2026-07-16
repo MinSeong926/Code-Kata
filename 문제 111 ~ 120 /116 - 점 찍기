@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+using namespace std;
+
+int func(long long i, long long d)
+{
+    long long left = 1, right = d, mid;
+    int res;
+    while (left <= right)
+    {
+        mid = (left+right)/2;
+        if (mid*mid + i*i <= d*d)
+        {
+            left = mid + 1;
+            res = mid;
+        }
+        else right = mid - 1;
+    }
+    return res;// 원 내부 혹은 위의 최대 정수 리턴(사실상 sqrt를 구한것이다.)
+}
+
+long long solution(int k, int d)
+{
+    long long answer = d/k + 1;// x축 위의 해당 점들++
+    for(long long i = 0;i<d;i+=k)
+        answer += func(i, d)/k;// 문제조건의 점들++
+    return answer;
+}
