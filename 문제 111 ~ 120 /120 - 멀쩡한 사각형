@@ -1,0 +1,31 @@
+using namespace std;
+
+long long solution(int w,int h) {
+    long long answer = 1;
+    long long multi = (long)w*h;  // 총 박스의 개수
+    long long sum = w + h;  // 합계
+    int div = 2;            // 나누는 변수
+    long long count = 1;    // 최대공약수
+    if(w == h)
+    {
+        answer = multi - w; // 같은 경우
+        return answer;
+    }
+    
+    while(div <= w && div <= h)
+    {
+        if(w % div == 0 && h % div == 0)    // 둘다 나눠지는 경우
+        {
+            w = w/div;
+            h = h/div;
+            count = count * div;    // 최대공약수를 구함
+        }
+        else
+        {
+            div++;
+        }
+    }
+    answer = multi - sum + count;
+    
+    return answer;
+}
