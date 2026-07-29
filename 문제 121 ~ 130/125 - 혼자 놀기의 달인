@@ -1,0 +1,45 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int DFS(int idx, bool visit[], vector<int> &cards) {
+    
+    int sum = 1;
+    while(!visit[cards[idx]-1]) {
+        idx = cards[idx]-1;
+        visit[idx] = true;
+        sum += 1;
+    }
+
+    return sum;
+}
+
+
+int solution(vector<int> cards) {
+    int answer = 0;
+    
+    bool visit[101]; // 각 위치의 상자 방문 여부
+    vector<int> v; // 각 그룹의 상자 개수를 담을 vector
+    fill(&visit[0], &visit[101], false);
+    
+    for(int i=0; i<cards.size(); i++) {
+        if(!visit[i]) {
+            visit[i] = true;
+            int result = DFS(i, visit, cards); // 연결된 모든 상자 방문
+            v.push_back(result); // 모든 상가 방문한 개수(result)를 추가
+        }
+    }
+    
+    // 내림차순 정렬
+    sort(v.begin(), v.end(), greater<>());
+    
+    // 한번에 모든 상자를 돌아버릴 수 있으니 2번 그룹 존재하는지 확인해줘야함.
+    if(v.size()>=2) {
+        answer = v[0] * v[1]; // 가장 큰 상자개수 2개를 곱함.
+    }
+    
+    return answer;
+}
