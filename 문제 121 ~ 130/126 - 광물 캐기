@@ -1,0 +1,52 @@
+#include <string>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int answer = 1500;
+
+int cal(string mineral, int type, int value){
+    if(mineral=="diamond"){
+        if(type==0)
+            value++;
+        else if(type==1)
+            value+=5;
+        else
+            value+=25;
+    }
+    else if(mineral=="iron"){
+        if(type==2)
+            value+=5;
+        else
+            value++;
+    }
+    else
+        value++;
+    return value;
+}
+
+void DFS(int type, int count, int value, int idx, vector<int> picks, vector<string> minerals){
+    if(idx==minerals.size()||picks[0]==0&&picks[1]==0&&picks[2]==0){
+        answer = min(value, answer);
+        return;
+    }
+    if(count==0){
+        for(int i=0;i<picks.size();i++){
+            if(picks[i]>0){
+                DFS(i, (count+1)%5, cal(minerals[idx], i, value), idx+1, picks, minerals);
+            }
+        }
+    }
+    else{
+        if(count==4)
+            picks[type]--;
+        DFS(type, (count+1)%5, cal(minerals[idx], type, value), idx+1, picks, minerals);
+    }
+    
+}
+
+int solution(vector<int> picks, vector<string> minerals) {
+    DFS(0, 0, 0, 0, picks, minerals);
+    return answer;
+}
