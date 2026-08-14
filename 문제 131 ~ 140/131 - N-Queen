@@ -1,0 +1,46 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int N;
+int answer = 0;
+int queen_col[13];
+
+bool check(int row)
+{
+    for(int i = 0; i < row; ++i)
+    {
+        if(queen_col[row] == queen_col[i] 
+           || row-i == abs(queen_col[row]-queen_col[i]))
+            return false;
+    }
+    return true;
+}
+
+void nqueen(int row)
+{
+    if(row == N)
+    {
+        ++answer;
+        return;
+    }
+    
+    for(int i = 0; i < N; ++i)
+    {
+        queen_col[row] = i;
+    
+        if(check(row))
+        {
+            nqueen(row+1);
+        }
+    }
+
+}
+
+int solution(int n) 
+{
+    N = n;
+    nqueen(0);
+    return answer;
+}
