@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int solution(string name) {
+    int answer = 0;
+    int min_num = 300;
+    int index;
+    int length = name.size();
+    
+    for (int i = 0; i < length; i++)
+    {
+        int updown = name[i] - 'A';
+        if (updown > 13) updown = 26 - updown;
+        answer += updown;
+        
+        index = i + 1;
+        while (name[index] == 'A') index++;
+        int tmp = min({length - 1, i * 2 + length - index, i + (length - index) * 2});
+        if (min_num > tmp) min_num = tmp;
+    }
+    answer += min_num; 
+    return answer;
+}
