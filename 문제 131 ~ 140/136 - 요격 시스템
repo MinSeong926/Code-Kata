@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int solution(vector<vector<int>> targets) {
+    int answer = 0;
+    
+    // 끝점(end) 기준 오름차순 정렬
+    sort(targets.begin(), targets.end(), [](const vector<int>& a, const vector<int>& b) {
+        return a[1] < b[1];
+    });
+    
+    double last_intercept = -1; // 마지막으로 요격한 위치
+    
+    for (const auto& target : targets) {
+        // 현재 미사일의 시작점이 마지막 요격 위치보다 크거나 같다면 새로운 요격 필요
+        if (target[0] >= last_intercept) {
+            answer++;
+            last_intercept = target[1]; // 현재 미사일의 끝점에 요격 미사일 배치
+        }
+    }
+    
+    return answer;
+}
