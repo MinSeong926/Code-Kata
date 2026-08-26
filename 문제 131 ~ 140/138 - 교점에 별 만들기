@@ -1,0 +1,51 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+vector<string> solution(vector<vector<int>> line) {
+    vector<pair<long long, long long>> points;
+    long long min_x = LLONG_MAX, max_x = LLONG_MIN;
+    long long min_y = LLONG_MAX, max_y = LLONG_MIN;
+
+    // 1. 모든 직선 쌍의 교점 구하기
+    for (int i = 0; i < line.size(); i++) {
+        for (int j = i + 1; j < line.size(); j++) {
+            long long a = line[i][0], b = line[i][1], c = line[i][2];
+            long long d = line[j][0], e = line[j][1], f = line[j][2];
+
+            long long denominator = a * e - b * d;
+            if (denominator == 0) continue; // 평행 또는 일치
+
+            long long x_numerator = b * f - e * c;
+            long long y_numerator = d * c - a * f;
+
+            if (x_numerator % denominator != 0 || y_numerator % denominator != 0) continue; // 정수 좌표만 허용
+
+            long long x = x_numerator / denominator;
+            long long y = y_numerator / denominator;
+
+            points.push_back({x, y});
+            min_x = min(min_x, x);
+            max_x = max(max_x, x);
+            min_y = min(min_y, y);
+            max_y = max(max_y, y);
+        }
+    }
+
+    // 2. 격자판 생성 및 초기화
+    long long width = max_x - min_x + 1;
+    long long height = max_y - min_y + 1;
+    vector<string> answer(height, string(width, '.'));
+
+    // 3. 별 찍기
+    for (const auto& p : points) {
+        long long x = p.first - min_x;
+        long long y = max_y - p.second; // y축 반전 (위쪽이 0번 인덱스)
+        answer[y][x] = '*';
+    }
+
+    return answer;
+}
