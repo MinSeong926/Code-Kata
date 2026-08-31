@@ -1,0 +1,45 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+vector<int> solution(int m, int n, int startX, int startY, vector<vector<int>> balls) {
+    vector<int> answer;
+    
+    for (int i = 0; i < balls.size(); i++) {
+        int targetX = balls[i][0];
+        int targetY = balls[i][1];
+        int min_dist = 2e9; // 최댓값 초기화
+        
+        // 1. 위쪽 벽 (y = n)
+        if (!(startX == targetX && startY < targetY)) {
+            int ny = 2 * n - targetY;
+            int dist = pow(startX - targetX, 2) + pow(startY - ny, 2);
+            min_dist = min(min_dist, dist);
+        }
+        // 2. 아래쪽 벽 (y = 0)
+        if (!(startX == targetX && startY > targetY)) {
+            int ny = -targetY;
+            int dist = pow(startX - targetX, 2) + pow(startY - ny, 2);
+            min_dist = min(min_dist, dist);
+        }
+        // 3. 왼쪽 벽 (x = 0)
+        if (!(startY == targetY && startX > targetX)) {
+            int nx = -targetX;
+            int dist = pow(startX - nx, 2) + pow(startY - targetY, 2);
+            min_dist = min(min_dist, dist);
+        }
+        // 4. 오른쪽 벽 (x = m)
+        if (!(startY == targetY && startX < targetX)) {
+            int nx = 2 * m - targetX;
+            int dist = pow(startX - nx, 2) + pow(startY - targetY, 2);
+            min_dist = min(min_dist, dist);
+        }
+        
+        answer.push_back(min_dist);
+    }
+    
+    return answer;
+}
