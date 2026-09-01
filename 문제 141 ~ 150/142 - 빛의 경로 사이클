@@ -1,0 +1,55 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool visited[500][500][4];
+int dr[] = {-1, 0, 1, 0}; // 위, 우, 아래, 좌
+int dc[] = {0, 1, 0, -1};
+
+int R_size, C_size;
+
+int move_light(int r, int c, int d, const vector<string>& grid) {
+    int cnt = 0;
+    
+    while (true) {
+        if (visited[r][c][d]) break;
+        
+        visited[r][c][d] = true;
+        cnt++;
+        
+        if (grid[r][c] == 'L') {
+            d = (d + 3) % 4; // 좌회전
+        } else if (grid[r][c] == 'R') {
+            d = (d + 1) % 4; // 우회전
+        }
+        
+        r = (r + dr[d] + R_size) % R_size;
+        c = (c + dc[d] + C_size) % C_size;
+    }
+    
+    return cnt;
+}
+
+vector<int> solution(vector<string> grid) {
+    vector<int> answer;
+    R_size = grid.size();
+    C_size = grid[0].size();
+    
+    for (int i = 0; i < R_size; i++) {
+        for (int j = 0; j < C_size; j++) {
+            for (int k = 0; k < 4; k++) {
+                if (!visited[i][j][k]) {
+                    int len = move_light(i, j, k, grid);
+                    if (len > 0) {
+                        answer.push_back(len);
+                    }
+                }
+            }
+        }
+    }
+    
+    sort(answer.begin(), answer.end());
+    return answer;
+}
