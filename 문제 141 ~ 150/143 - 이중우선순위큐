@@ -1,0 +1,41 @@
+#include <string>
+#include <vector>
+#include <set>
+#include <sstream>
+
+using namespace std;
+
+vector<int> solution(vector<string> operations) {
+    multiset<int> ms;
+    
+    for (string op : operations) {
+        stringstream ss(op);
+        char cmd;
+        int num;
+        ss >> cmd >> num;
+        
+        if (cmd == 'I') {
+            ms.insert(num);
+        } else if (cmd == 'D') {
+            if (ms.empty()) continue;
+            
+            if (num == 1) {
+                // 최댓값 삭제
+                auto it = ms.end();
+                it--;
+                ms.erase(it);
+            } else if (num == -1) {
+                // 최솟값 삭제
+                ms.erase(ms.begin());
+            }
+        }
+    }
+    
+    if (ms.empty()) {
+        return {0, 0};
+    } else {
+        auto max_it = ms.end();
+        max_it--;
+        return {*max_it, *ms.begin()};
+    }
+}
