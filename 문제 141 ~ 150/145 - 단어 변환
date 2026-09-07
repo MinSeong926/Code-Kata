@@ -1,0 +1,42 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+// 알파벳이 1개만 다른지 확인하는 함수
+bool isCheck(string s1, string s2) {
+    int diff = 0;
+    for (int i = 0; i < s1.length(); i++) {
+        if (s1[i] != s2[i]) diff++;
+    }
+    return diff == 1;
+}
+
+int solution(string begin, string target, vector<string> words) {
+    // target이 words에 없으면 변환 불가능
+    if (find(words.begin(), words.end(), target) == words.end()) return 0;
+    
+    queue<pair<string, int>> q;
+    vector<bool> visited(words.size(), false);
+    
+    q.push({begin, 0});
+    
+    while (!q.empty()) {
+        string cur = q.front().first;
+        int cnt = q.front().second;
+        q.pop();
+        
+        if (cur == target) return cnt;
+        
+        for (int i = 0; i < words.size(); i++) {
+            if (!visited[i] && isCheck(cur, words[i])) {
+                visited[i] = true;
+                q.push({words[i], cnt + 1});
+            }
+        }
+    }
+    
+    return 0;
+}
