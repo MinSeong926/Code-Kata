@@ -1,0 +1,56 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// 부모 노드를 찾는 함수 (Find)
+int getParent(int parent[], int x) {
+    if (parent[x] == x) return x;
+    return parent[x] = getParent(parent, parent[x]);
+}
+
+// 두 부모 노드를 합치는 함수 (Union)
+void unionParent(int parent[], int a, int b) {
+    a = getParent(parent, a);
+    b = getParent(parent, b);
+    if (a < b) parent[b] = a;
+    else parent[a] = b;
+}
+
+// 같은 부모를 가지는지 확인 (사이클 판별)
+bool findParent(int parent[], int a, int b) {
+    a = getParent(parent, a);
+    b = getParent(parent, b);
+    if (a == b) return true;
+    else return false;
+}
+
+// 비용 기준으로 오름차순 정렬
+bool cmp(vector<int>& a, vector<int>& b) {
+    return a[2] < b[2];
+}
+
+int solution(int n, vector<vector<int>> costs) {
+    int answer = 0;
+    
+    // 간선 비용 오름차순 정렬
+    sort(costs.begin(), costs.end(), cmp);
+    
+    // 부모 테이블 초기화
+    int parent[100];
+    for (int i = 0; i < n; i++) {
+        parent[i] = i;
+    }
+    
+    // 크루스칼 알고리즘 수행
+    for (int i = 0; i < costs.size(); i++) {
+        // 사이클이 발생하지 않는 경우에만 집합 합치기 및 비용 추가
+        if (!findParent(parent, costs[i][0], costs[i][1])) {
+            unionParent(parent, costs[i][0], costs[i][1]);
+            answer += costs[i][2];
+        }
+    }
+    
+    return answer;
+}
