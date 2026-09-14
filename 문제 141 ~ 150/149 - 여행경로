@@ -1,0 +1,40 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool found = false;
+vector<string> answer;
+
+void dfs(string current, vector<vector<string>>& tickets, vector<bool>& visited, vector<string>& path, int cnt) {
+    path.push_back(current);
+    
+    // 모든 티켓을 사용한 경우
+    if (cnt == tickets.size()) {
+        answer = path;
+        found = true;
+        return;
+    }
+    
+    for (int i = 0; i < tickets.size(); i++) {
+        if (!visited[i] && tickets[i][0] == current) {
+            visited[i] = true;
+            dfs(tickets[i][1], tickets, visited, path, cnt + 1);
+            if (found) return; // 가장 먼저 찾은 것이 알파벳 순으로 가장 빠름
+            visited[i] = false;
+        }
+    }
+    
+    path.pop_back();
+}
+
+vector<string> solution(vector<vector<string>> tickets) {
+    sort(tickets.begin(), tickets.end()); // 알파벳 순 정렬
+    vector<bool> visited(tickets.size(), false);
+    vector<string> path;
+    
+    dfs("ICN", tickets, visited, path, 0);
+    
+    return answer;
+}
