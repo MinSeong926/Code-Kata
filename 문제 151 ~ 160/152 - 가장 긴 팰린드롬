@@ -1,0 +1,31 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+// 중심에서 양옆으로 확장하며 팰린드롬 길이를 구하는 함수
+int expand(int left, int right, const string& s) {
+    while (left >= 0 && right < s.length() && s[left] == s[right]) {
+        left--;
+        right++;
+    }
+    // 확장 종료 후 유효했던 팰린드롬의 길이 반환 (right - left - 1)
+    return right - left - 1;
+}
+
+int solution(string s) {
+    int max_len = 0;
+    
+    for (int i = 0; i < s.length(); ++i) {
+        // 1. 홀수 길이 팰린드롬 (중심이 한 글자)
+        int len1 = expand(i, i, s);
+        // 2. 짝수 길이 팰린드롬 (중심이 두 글자)
+        int len2 = expand(i, i + 1, s);
+        
+        // 최댓값 갱신
+        max_len = max({max_len, len1, len2});
+    }
+    
+    return max_len;
+}
