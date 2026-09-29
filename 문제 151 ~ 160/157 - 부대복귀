@@ -1,0 +1,54 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> graph[100001];
+int dist[100001];
+
+vector<int> solution(int n, vector<vector<int>> roads, vector<int> sources, int destination) {
+    // 1. 그래프 연결 정보 저장
+    for (int i = 0; i < roads.size(); i++) {
+        int u = roads[i][0];
+        int v = roads[i][1];
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+    
+    // 2. 거리 배열 초기화 (-1)
+    fill(dist, dist + n + 1, -1);
+    
+    // 3. 목적지(destination)에서 시작하는 BFS 수행
+    queue<int> q;
+    q.push(destination);
+    dist[destination] = 0;
+    
+    while (!q.empty()) {
+        int curr = q.front();
+        q.pop();
+        
+        for (int i = 0; i < graph[curr].size(); i++) {
+            int next = graph[curr][i];
+            
+            if (dist[next] == -1) { // 아직 방문하지 않은 지역
+                dist[next] = dist[curr] + 1;
+                q.push(next);
+            }
+        }
+    }
+    
+    // 4. 각 부대원의 복귀 최단시간 결과 집계
+    vector<int> answer;
+    for (int i = 0; i < sources.size(); i++) {
+        answer.push_back(dist[sources[i]]);
+    }
+    
+    // 다음 테스트를 위해 전역 변수 초기화 (필요시)
+    for (int i = 1; i <= n; i++) {
+        graph[i].clear();
+    }
+    
+    return answer;
+}
