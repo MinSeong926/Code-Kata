@@ -1,0 +1,64 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+
+vector<int> g_info;
+vector<vector<int>> g_edges;
+vector<vector<int>> tree;
+int max_sheep = 0;
+
+// DFS 함수 (현재 노드, 양의 수, 늑대의 수, 다음 방문 가능 노드 리스트)
+void dfs(int current, int sheep_cnt, int wolf_cnt, vector<int> next_nodes) {
+    // 현재 노드 방문 처리
+    if (g_info[current] == 0) {
+        sheep_cnt++;
+    } else {
+        wolf_cnt++;
+    }
+
+    // 조건 체크: 늑대가 양보다 많거나 같아지면 종료
+    if (wolf_cnt >= sheep_cnt) {
+        return;
+    }
+
+    // 최대 양의 수 갱신
+    max_sheep = max(max_sheep, sheep_cnt);
+
+    // 다음에 갈 수 있는 노드 리스트 갱신 (현재 노드의 자식들 추가)
+    vector<int> next = next_nodes;
+    // 현재 노드는 다음 후보에서 제거
+    auto it = find(next.begin(), next.end(), current);
+    if (it != next.end()) {
+        next.erase(it);
+    }
+    // 자식 노드들 추가
+    for (int child : tree[current]) {
+        next.push_back(child);
+    }
+
+    // 다음 후보 노드들을 하나씩 방문
+    for (int next_node : next) {
+        dfs(next_node, sheep_cnt, wolf_cnt, next);
+    }
+}
+
+int solution(vector<int> info, vector<vector<int>> edges) {
+    g_info = info;
+    g_edges = edges;
+    tree.resize(info.size());
+
+    // 트리 구성 (부모 -> 자식)
+    for (const auto& edge : edges) {
+        tree[edge[0]].push_back(edge[1]);
+    }
+
+    // 최초 시작: 루트 노드(0), 양 0, 늑대 0, 다음 갈 수 있는 노드(0)
+    vector<int> next_nodes;
+    next_nodes.push_back(0);
+    dfs(0, 0, 0, next_nodes);
+
+    return max_sheep;
+}
