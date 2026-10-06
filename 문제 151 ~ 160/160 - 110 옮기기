@@ -1,0 +1,55 @@
+#include <string>
+#include <vector>
+#include <stack>
+#include <algorithm>
+
+using namespace std;
+
+vector<string> solution(vector<string> s) {
+    vector<string> answer;
+    
+    for (int i = 0; i < s.size(); i++) {
+        string target = s[i];
+        string rest = "";
+        int cnt_110 = 0;
+        
+        // 1. 스택을 이용해 "110" 추출 및 개수 카운트
+        for (int j = 0; j < target.length(); j++) {
+            rest += target[j];
+            if (rest.length() >= 3) {
+                if (rest.back() == '0' && rest[rest.length() - 2] == '1' && rest[rest.length() - 3] == '1') {
+                    rest.pop_back(); // '0' 제거
+                    rest.pop_back(); // '1' 제거
+                    rest.pop_back(); // '1' 제거
+                    cnt_110++;
+                }
+            }
+        }
+        
+        // 2. 남은 문자열에서 마지막 '0' 위치 찾기
+        int idx = -1;
+        for (int j = rest.length() - 1; j >= 0; j--) {
+            if (rest[j] == '0') {
+                idx = j;
+                break;
+            }
+        }
+        
+        // 3. '110' 삽입하기
+        string result = "";
+        if (idx == -1) {
+            // '0'이 없는 경우 맨 앞에 삽입
+            for (int j = 0; j < cnt_110; j++) result += "110";
+            result += rest;
+        } else {
+            // 마지막 '0' 뒤에 삽입
+            result = rest.substr(0, idx + 1);
+            for (int j = 0; j < cnt_110; j++) result += "110";
+            result += rest.substr(idx + 1);
+        }
+        
+        answer.push_back(result);
+    }
+    
+    return answer;
+}
