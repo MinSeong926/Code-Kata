@@ -1,0 +1,63 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+// 십진수를 이진수 문자열로 변환하는 함수
+string to_binary(long long n) {
+    if (n == 0) return "0";
+    string res = "";
+    while (n > 0) {
+        res += (n % 2 == 0 ? '0' : '1');
+        n /= 2;
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+
+// 트리 유효성 검사 재귀 함수
+bool check(string bin, int start, int end, bool parent_is_zero) {
+    if (start > end) return true;
+    
+    int mid = (start + end) / 2;
+    char root = bin[mid];
+    
+    // 부모가 더미 노드('0')인데 현재 노드가 존재('1')하면 잘못된 트리
+    if (parent_is_zero && root == '1') return false;
+    
+    // 자식 노드를 검사할 때 현재 루트가 '0'이면 자식도 '0'이어야 함
+    bool next_parent_zero = (root == '0');
+    
+    return check(bin, start, mid - 1, next_parent_zero) && 
+           check(bin, mid + 1, end, next_parent_zero);
+}
+
+vector<int> solution(vector<long long> numbers) {
+    vector<int> answer;
+    
+    for (long long num : numbers) {
+        string bin = to_binary(num);
+        
+        // 포화 이진트리의 노드 개수(2^h - 1) 구하기
+        long long len = bin.length();
+        long long h = 1;
+        while ((1LL << h) - 1 < len) {
+            h++;
+        }
+        
+        // 부족한 길이만큼 앞에 '0' 채우기
+        long long full_len = (1LL << h) - 1;
+        string padded_bin = string(full_len - len, '0') + bin;
+        
+        // 유효성 판별
+        if (check(padded_bin, 0, padded_bin.length() - 1, false)) {
+            answer.push_back(1);
+        } else {
+            answer.push_back(0);
+        }
+    }
+    
+    return answer;
+}
